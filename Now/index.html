@@ -11,11 +11,11 @@
     var BackButton = WebApp.BackButton;
     var form = document.getElementById('MainForm');
     // заполняем инпуты
-    form.title.value = WebApp.initDataUnsafe.data.title;
-    form.name.value = WebApp.initDataUnsafe.data.name;
-    form.phone.value = WebApp.initDataUnsafe.data.phone;
-    form.id.value = WebApp.initDataUnsafe.data.id;
-    form.hash.value = WebApp.initDataUnsafe.data.hash;
+    form['title'].value = WebApp.initDataUnsafe.data.title;
+    form['name'].value = WebApp.initDataUnsafe.data.name;
+    form['phone'].value = WebApp.initDataUnsafe.data.phone;
+    form['id'].value = WebApp.initDataUnsafe.data.id;
+    form['hash'].value = WebApp.initDataUnsafe.data.hash;
 
     MainButton.show();
     BackButton.show();
@@ -76,11 +76,6 @@
             cursor: pointer;
             color: var(--tg-theme-button-text-color);
             background: var(--tg-theme-button-color);
-        }
-
-        form {
-            display: none;
-            text-align: center;
         }
         
         input {
