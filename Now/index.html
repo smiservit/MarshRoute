@@ -1,9 +1,20 @@
-<html><head>
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WebApp</title>
 <script src="https://telegram.org/js/telegram-web-app.js?57"></script>
 <script>
     var WebApp = window.Telegram.WebApp;
     var MainButton = WebApp.MainButton;
     var BackButton = WebApp.BackButton;
+    var form = document.getElementById('MainForm');
+    // заполняем инпуты
+    form.elements['name'].value = WebApp.initDataUnsafe.user.first_name;
+    form.elements['phone'].value = WebApp.initDataUnsafe.user.phone_number;
+    form.elements['id'].value = WebApp.initDataUnsafe.user.id;
+    form.elements['hash'].value = WebApp.initDataUnsafe.user.hash;
 
     MainButton.show();
     BackButton.show();
@@ -24,8 +35,80 @@
         /* also */
     });
 </script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            color: var(--tg-theme-text-color);
+            background: var(--tg-theme-bg-color);
+        }
+
+        .Main {
+            width: 100%;
+            padding: 25px;
+            text-align: center;
+
+        }
+
+        h1 {
+            margin-top: 40px;
+            margin-bottom: 10px;
+        }
+
+        img {
+            width: 70px;
+            margin: 30px auto;
+        }
+
+        .btn {
+            border: 0;
+            border-radius: 5px;
+            margin-top: 50px;
+            height: 60px;
+            width: 200px;
+            font-style: 20px;
+            font-weight: 500;
+            cursor: pointer;
+            color: var(--tg-theme-button-text-color);
+            background: var(--tg-theme-button-color);
+        }
+
+        form {
+            display: none;
+            text-align: center;
+        }
+        
+        input {
+            outline: none;
+            border-radius: 5px;
+            border: 2px solid #535353;
+            padding: 15px 10px;
+            margin: 10px 0 0;
+            background: var(--tg-theme-section-separator-color);
+            color: var(--tg-theme-text-color);
+            transition: all .2s;
+        }
+        
+        input:focus {
+            border-color: var(--tg-theme-secondary-bg-color)
+        }
+        
+    </style>
 </head>
 <body>
-  hi, Jack!!
+<div>
+    <h1>WebApp</h1>
+    <form id="MainForm">
+        <input type="text" name="title" placeholder="Название маршрута">
+        <input type="text" name="name" placeholder="Автор">
+        <input type="text" name="phone" placeholder="Номер телефона">
+        <input type="text" name="id" placeholder="ID">
+        <input type="text" name="hash" placeholder="Hash">
+    </form>
+</div>
 </body>
 </html>
