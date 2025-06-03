@@ -3,110 +3,201 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WebApp</title>
-<script src="https://telegram.org/js/telegram-web-app.js?57"></script>
-<script>
-window.onload = () => {
-    var WebApp = window.Telegram.WebApp;
-    var MainButton = WebApp.MainButton;
-    var BackButton = WebApp.BackButton;
-    var form1 = document.getElementById('MainForm');
-    // заполняем инпуты
-    form1.elements.title.value = WebApp.initDataUnsafe.data.title;
-    form1.elements.name.value = WebApp.initDataUnsafe.data.name;
-    form1.elements.phone.value = WebApp.initDataUnsafe.data.phone;
-    form1.elements.id.value = WebApp.initDataUnsafe.data.id;
-    form1.elements.hash.value = WebApp.initDataUnsafe.data.hash;
-
-    MainButton.show();
-    BackButton.show();
-
-    MainButton.onClick(function() {
-        WebApp.showAlert("Хорошо, ты нажал на главную кнопку.");
-    });
-    WebApp.onEvent('mainButtonClicked', function() {
-        /* also */
-    });
-
-    BackButton.onClick(function() {
-        WebApp.showAlert("Нет пути назад!");
-  
-        BackButton.hide();
-    });
-    WebApp.onEvent('backButtonClicked', function() {
-        /* also */
-    });
-}    
-</script>
+    <title>Редактирование маршрута</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
-        * {
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            padding: 15px;
             margin: 0;
-            padding: 0;
+            background-color: #f5f5f5;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #333;
+            font-size: 20px;
+            margin-top: 0;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+        }
+        input, textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
             box-sizing: border-box;
         }
-
-        body {
-            color: var(--tg-theme-text-color);
-            background: var(--tg-theme-bg-color);
+        textarea {
+            min-height: 100px;
+            resize: vertical;
         }
-
-        .Main {
+        button {
+            background-color: #34a4eb;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-size: 16px;
             width: 100%;
-            padding: 25px;
-            text-align: center;
-
-        }
-
-        h1 {
-            margin-top: 40px;
-            margin-bottom: 10px;
-        }
-
-        img {
-            width: 70px;
-            margin: 30px auto;
-        }
-
-        .btn {
-            border: 0;
-            border-radius: 5px;
-            margin-top: 50px;
-            height: 60px;
-            width: 200px;
-            font-style: 20px;
-            font-weight: 500;
             cursor: pointer;
-            color: var(--tg-theme-button-text-color);
-            background: var(--tg-theme-button-color);
+            font-weight: 500;
         }
-        
-        input {
-            outline: none;
-            border-radius: 5px;
-            border: 2px solid #535353;
-            padding: 15px 10px;
-            margin: 10px 0 0;
-            background: var(--tg-theme-section-separator-color);
-            color: var(--tg-theme-text-color);
-            transition: all .2s;
+        button:hover {
+            background-color: #2a8fd4;
         }
-        
-        input:focus {
-            border-color: var(--tg-theme-secondary-bg-color)
+        .map-container {
+            height: 200px;
+            background: #eee;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            position: relative;
+            overflow: hidden;
         }
-        
+        .coordinates {
+            display: flex;
+            gap: 10px;
+        }
+        .coordinates input {
+            flex: 1;
+        }
     </style>
 </head>
 <body>
-<div>
-    <h1>WebApp</h1>
-    <form id="MainForm">
-        <input type="text" name="title" placeholder="Название маршрута">
-        <input type="text" name="name" placeholder="Автор">
-        <input type="text" name="phone" placeholder="Номер телефона">
-        <input type="text" name="id" placeholder="ID">
-        <input type="text" name="hash" placeholder="Hash">
-    </form>
-</div>
+    <div class="container">
+        <h1>Редактирование маршрута</h1>
+        
+        <div class="form-group">
+            <label for="title">Название маршрута</label>
+            <input type="text" id="title" required>
+        </div>
+        
+        <div class="form-group">
+            <label for="distance">Дистанция (км)</label>
+            <input type="number" id="distance" required>
+        </div>
+        
+        <div class="form-group">
+            <label for="date">Дата и время</label>
+            <input type="datetime-local" id="date" required>
+        </div>
+        
+        <div class="form-group">
+            <label>Местоположение</label>
+            <div class="map-container" id="map"></div>
+            <div class="coordinates">
+                <input type="number" id="latitude" placeholder="Широта" step="0.000001" required>
+                <input type="number" id="longitude" placeholder="Долгота" step="0.000001" required>
+            </div>
+            <button type="button" id="get-location">Получить текущее местоположение</button>
+        </div>
+        
+        <div class="form-group">
+            <label for="description">Описание</label>
+            <textarea id="description" required></textarea>
+        </div>
+        
+        <button type="button" id="submit">Сохранить изменения</button>
+    </div>
+
+    <script>
+        const tg = window.Telegram.WebApp;
+        tg.expand();
+        
+        // Получаем параметры из URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const user_id = urlParams.get('user_id');
+        const route_id = urlParams.get('route_id');
+        
+        // Загружаем данные маршрута (можно через API вашего бота)
+        async function loadRouteData() {
+            try {
+                // Здесь должен быть запрос к вашему API для получения данных маршрута
+                // Пример:
+                // const response = await fetch(`/api/routes/${route_id}?user_id=${user_id}`);
+                // const routeData = await response.json();
+                
+                // Для примера используем временные данные
+                const routeData = {
+                    title: "Пример маршрута",
+                    distance: 10,
+                    date: "2025-06-15T10:00",
+                    description: "Описание маршрута",
+                    latitude: 55.7558,
+                    longitude: 37.6176
+                };
+                
+                // Заполняем форму
+                document.getElementById('title').value = routeData.title;
+                document.getElementById('distance').value = routeData.distance;
+                document.getElementById('date').value = routeData.date;
+                document.getElementById('description').value = routeData.description;
+                document.getElementById('latitude').value = routeData.latitude;
+                document.getElementById('longitude').value = routeData.longitude;
+                
+                // Здесь можно инициализировать карту (например, Яндекс.Карты или Leaflet)
+                // initMap(routeData.latitude, routeData.longitude);
+                
+            } catch (error) {
+                console.error("Ошибка загрузки данных:", error);
+                tg.showAlert("Не удалось загрузить данные маршрута");
+            }
+        }
+        
+        // Обработчик кнопки "Получить местоположение"
+        document.getElementById('get-location').addEventListener('click', () => {
+            tg.requestLocation((location) => {
+                if (location) {
+                    document.getElementById('latitude').value = location.latitude;
+                    document.getElementById('longitude').value = location.longitude;
+                    // Обновить карту
+                    // updateMap(location.latitude, location.longitude);
+                }
+            }, () => {
+                tg.showAlert("Не удалось получить местоположение");
+            });
+        });
+        
+        // Обработчик отправки формы
+        document.getElementById('submit').addEventListener('click', () => {
+            const formData = {
+                user_id: user_id,
+                route_id: route_id,
+                title: document.getElementById('title').value,
+                distance: parseFloat(document.getElementById('distance').value),
+                date: document.getElementById('date').value,
+                description: document.getElementById('description').value,
+                latitude: parseFloat(document.getElementById('latitude').value),
+                longitude: parseFloat(document.getElementById('longitude').value)
+            };
+            
+            // Валидация
+            if (!formData.title || !formData.distance || !formData.date || 
+                !formData.description || isNaN(formData.latitude) || isNaN(formData.longitude)) {
+                tg.showAlert("Пожалуйста, заполните все поля");
+                return;
+            }
+            
+            // Отправляем данные в бота
+            tg.sendData(JSON.stringify(formData));
+            tg.close();
+        });
+        
+        // Инициализация при загрузке
+        document.addEventListener('DOMContentLoaded', loadRouteData);
+    </script>
 </body>
 </html>
