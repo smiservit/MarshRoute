@@ -10,13 +10,13 @@ window.onload = () => {
     var WebApp = window.Telegram.WebApp;
     var MainButton = WebApp.MainButton;
     var BackButton = WebApp.BackButton;
-    var form = document.getElementById('MainForm');
+    var form1 = document.getElementById('MainForm');
     // заполняем инпуты
-    forme.elements.title.value = WebApp.initDataUnsafe.data.title;
-    forme.elements.name.value = WebApp.initDataUnsafe.data.name;
-    forme.elements.phone.value = WebApp.initDataUnsafe.data.phone;
-    forme.elements.id.value = WebApp.initDataUnsafe.data.id;
-    forme.elements.hash.value = WebApp.initDataUnsafe.data.hash;
+    form1.elements.title.value = WebApp.initDataUnsafe.data.title;
+    form1.elements.name.value = WebApp.initDataUnsafe.data.name;
+    form1.elements.phone.value = WebApp.initDataUnsafe.data.phone;
+    form1.elements.id.value = WebApp.initDataUnsafe.data.id;
+    form1.elements.hash.value = WebApp.initDataUnsafe.data.hash;
 
     MainButton.show();
     BackButton.show();
