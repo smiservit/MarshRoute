@@ -6,16 +6,17 @@
     <title>WebApp</title>
 <script src="https://telegram.org/js/telegram-web-app.js?57"></script>
 <script>
+window.onload = () => {
     var WebApp = window.Telegram.WebApp;
     var MainButton = WebApp.MainButton;
     var BackButton = WebApp.BackButton;
     var form = document.getElementById('MainForm');
     // заполняем инпуты
-    form['title'].value = WebApp.initDataUnsafe.data.title;
-    form['name'].value = WebApp.initDataUnsafe.data.name;
-    form['phone'].value = WebApp.initDataUnsafe.data.phone;
-    form['id'].value = WebApp.initDataUnsafe.data.id;
-    form['hash'].value = WebApp.initDataUnsafe.data.hash;
+    forme.elements.title.value = WebApp.initDataUnsafe.data.title;
+    forme.elements.name.value = WebApp.initDataUnsafe.data.name;
+    forme.elements.phone.value = WebApp.initDataUnsafe.data.phone;
+    forme.elements.id.value = WebApp.initDataUnsafe.data.id;
+    forme.elements.hash.value = WebApp.initDataUnsafe.data.hash;
 
     MainButton.show();
     BackButton.show();
@@ -35,6 +36,7 @@
     WebApp.onEvent('backButtonClicked', function() {
         /* also */
     });
+}    
 </script>
     <style>
         * {
